@@ -23,8 +23,17 @@ const OrderContent = styled(DialogContent)`
     height: 100%;
 `;
 
+const OrderContainer = styled.div`
+    padding: 10px 10px;
+    border-bottom: 1px solid grey;
+`;
+
 const OrderFooter = styled.div`
 
+`;
+
+const OrderItem = styled.div`
+    padding: 10px 0px;
 `;
 
 
@@ -36,7 +45,20 @@ export function Order({ orders }) {
                 Your order is looking pretty empty
             </OrderContent>)
             : (
-            <OrderContent> Found {orders.length} orders </OrderContent>
+            <OrderContent> 
+                {" "}
+                <OrderContainer> 
+                    Your Order: {orders.length} 
+                </OrderContainer> 
+                {" "}
+                {orders.map(order => (
+                    <OrderContainer>
+                        <OrderItem>
+                            {order.name}
+                        </OrderItem>
+                    </OrderContainer>
+                ))}
+            </OrderContent>
             )}
 
         <DialogFooter>
