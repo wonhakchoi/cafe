@@ -21,7 +21,7 @@ const Logo = styled(Title)`
 export function Navbar(){
     return <NavbarStyled>
         <Logo>
-            Catfe
+            Catfe <span role="img" aria-label="cat">  </span>
         </Logo>
     </NavbarStyled>
 }

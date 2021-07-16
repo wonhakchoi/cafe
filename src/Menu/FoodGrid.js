@@ -7,17 +7,19 @@ export const FoodGrid = styled.div`
     gap: 20px;
 `
 
-export const FoodLabel = styled.div `
+export const FoodLabel = styled(Title) `
     // absolute - sizes to the content itself
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 1);
     pading: 5px;
     margin: 4px 4px 4px 4px;
-    border-radius: 2px;
+    border: 6px solid white;
+    border-radius: 4px;
+    font-size: 14px;
 `
 
-export const Food = styled(Title)`
-    height: 100px;
+export const Food = styled.div`
+    height: 200px;
     padding: 10px;
     font-size: 20px;
     color: black;
@@ -27,9 +29,16 @@ export const Food = styled(Title)`
     background-size: cover;
     filter: contrast(90%);
     border-radius: 4px;
-    box-shadow: 1px 1px 4px 1px grey;
+
+    margin-top: 5px;
+    transition-property: box-shadow margin-top filter;
+    transition-duration: 1s
+    box-shadow: 0px 0px 2px 0px grey;
     &:hover {
+        margin-top: 0px;
+        margin-bottom: 5px;
         cursor: pointer;
-        opacity: 0.7;
+        filter: contrast(100%);
+        box-shadow: 0px 5px 10px 0px grey
     }
 `
