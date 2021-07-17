@@ -1,23 +1,35 @@
+// converting number into price
+export function formatPrice(price) {
+    return price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    })
+}
+
 export const foodItems = [
     {
         name: 'Waffles',
         img: '/img/waffle.jpg',
-        section: 'Hot food'
+        section: 'Hot food',
+        price: 2
     },
     {
         name: 'Toast',
         img: '/img/toast.jpg',
-        section: 'Hot food'
+        section: 'Hot food',
+        price: 3.50
     }, 
     {
         name: 'Eggs',
         img: '/img/egg.jpg',
-        section: 'Snacks'
+        section: 'Snacks',
+        price: 1.99
     }, 
     {
         name: 'Fruit',
         img: 'img/fruit.jpg',
-        section: 'Snacks'
+        section: 'Snacks',
+        price: 1.50
     }
 ];
 
