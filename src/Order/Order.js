@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DialogContent, DialogFooter, ConfirmButton } from '../FoodDialog/FoodDialog';
 import { formatPrice } from '../Data/FoodData';
+import { getPrice } from '../FoodDialog/FoodDialog';
 
 const OrderStyled = styled.div`
     position: fixed;
@@ -39,8 +40,19 @@ const OrderItem = styled.div`
     justify-content: space-between;
 `;
 
+const DetailItem = styled.div`
+    color; gray;
+    font-size: 10px;
+`;
 
 export function Order({ orders }) {
+    const subtotal = orders.reduce((total, order) => {
+        return total + getPrice(order);
+    }, 0);
+
+    const tax = subtotal * 0.07;
+    const total = subtotal + tax;
+
     return <OrderStyled>
 
         {orders.length === 0 ?
@@ -48,25 +60,51 @@ export function Order({ orders }) {
                 Your order is looking pretty empty
             </OrderContent>)
             : (
-            <OrderContent> 
-                {" "}
-                <OrderContainer> 
-                    Your Order: {orders.length} 
-                </OrderContainer> 
-                {" "}
-                {orders.map(order => (
+                <OrderContent>
+                    {" "}
+                    <OrderContainer>
+                        Your Order: {orders.length}
+                    </OrderContainer>
+                    {" "}
+                    {orders.map(order => (
+                        <OrderContainer>
+                            <OrderItem>
+
+                                <div> {order.quantity} </div>
+                                <div> {order.name} </div>
+                                <div> </div>
+                                <div> {formatPrice(getPrice(order))} </div>
+
+                            </OrderItem>
+
+                            <DetailItem>
+                                {order.toppings
+                                    .filter(t => t.checked)
+                                    .map(topping => topping.name)
+                                    .join(", ")
+                                }
+                            </DetailItem>
+                        </OrderContainer>
+                    ))}
                     <OrderContainer>
                         <OrderItem>
-                            
-                            <div> 1 </div>
-                            <div> {order.name} </div>
-                            <div> </div>
-                            <div> {formatPrice(order.price)} </div>
-
+                            <div />
+                            <div> Subtotal </div>
+                            <div> {formatPrice(subtotal)} </div>
+                        </OrderItem>
+                        <OrderItem>
+                            <div />
+                            <div> Tax </div>
+                            <div> {formatPrice(tax)} </div>
+                        </OrderItem>
+                        <OrderItem>
+                            <div />
+                            <div> Total </div>
+                            <div> {formatPrice(total)} </div>
                         </OrderItem>
                     </OrderContainer>
-                ))}
-            </OrderContent>
+
+                </OrderContent>
             )}
 
         <DialogFooter>

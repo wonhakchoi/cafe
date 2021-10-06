@@ -4,6 +4,10 @@ import { FoodLabel } from '../Menu/FoodGrid';
 import { coffeeBrown } from '../Styles/colors';
 import { Title } from '../Styles/title';
 import { formatPrice } from '../Data/FoodData';
+import { QuantityInput } from './QuantityInput';
+import { useQuantity } from '../Hooks/useQuantity';
+import { Toppings } from './Toppings';
+import { useToppings } from '../Hooks/useToppings';
 
 const Dialog = styled.div`
     width: 500px;
@@ -23,6 +27,8 @@ export const DialogContent = styled.div`
     // border: 2px solid blue;
     min-height: 100px;
     overflow: auto;
+    padding: 0px 40px;
+    padding-bottom: 60px;
 `;
 
 export const DialogFooter = styled.div`
@@ -75,22 +81,35 @@ const DialogBannerName = styled(FoodLabel)`
     // justify-content: center;
 `
 
-export function FoodDialog({ openFood, setOpenFood, orders, setOrders }) {
+const pricePerTopping = 0.5; 
+
+export function getPrice(order){
+    return order.quantity * (order.price + order.toppings.filter(t => t.checked).length * pricePerTopping);
+}
+
+function hasToppings(food) {
+    return food.section === 'Hot food'
+}
+
+function FoodDialogContainer({ openFood, setOpenFood, orders, setOrders }) {
+    const quantity = useQuantity(openFood && openFood.quantity);
+    const toppings = useToppings(openFood.toppings);
+
     function close() {
         setOpenFood();
     }
 
-    if (!openFood) return null ;
-
     const order = {
-        ...openFood
+        ...openFood,
+        quantity: quantity.value,
+        toppings: toppings.toppings
     };
 
     function addToOrder() {
         setOrders([...orders, order]);
         close();
     }
-    
+
 
     return (openFood ? (
         <>
@@ -103,16 +122,28 @@ export function FoodDialog({ openFood, setOpenFood, orders, setOrders }) {
 
                 </ DialogBanner>
                 <DialogContent>
+                    <QuantityInput quantity={quantity} />
 
+                    {hasToppings(openFood) && <>
+                        <h3>Would you like toppings?</h3>
+                    <Toppings {...toppings}/> 
+                    </>}
                 </DialogContent>
-                
+
                 <DialogFooter>
                     <ConfirmButton onClick={addToOrder}>
-                        Add to order: {formatPrice(openFood.price)}
+                        {/* Add to order: {formatPrice(openFood.price)} */}
+                        Add to order: {formatPrice(getPrice(order))}
                     </ConfirmButton>
                 </DialogFooter>
             </Dialog>
         </>
-            ) : null
-            );
+    ) : null
+    );
+}
+
+
+export function FoodDialog(props) {
+    if (!props.openFood) return null;
+    return <FoodDialogContainer {...props} />
 }
