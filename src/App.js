@@ -23,7 +23,7 @@ function App() {
       {/* spread the properties of this object in as props */}
       <FoodDialog {...openFood} {...orders} />
       <Navbar />
-      <Order {...orders} />
+      <Order {...orders} {...openFood} />
       <Banner />
 
       <Menu {...openFood} />
